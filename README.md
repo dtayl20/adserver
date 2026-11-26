@@ -8,6 +8,8 @@ with the management console locked behind **Cloudflare Access**.
 > production, [ARCHITECTURE.md](ARCHITECTURE.md) the design, [SECURITY.md](SECURITY.md)
 > the threat model.
 
+![adserver management console](docs/admin-console.png)
+
 Drop a script tag on any site and it renders a banner from a zone you control:
 
 ```html
