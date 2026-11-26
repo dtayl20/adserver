@@ -1,0 +1,11 @@
+node_modules/
+.wrangler/
+.dev.vars
+.env
+*.log
+.DS_Store
+dist/
+coverage/
+
+# local-only production config
+wrangler.production.toml

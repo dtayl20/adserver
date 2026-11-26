@@ -1,0 +1,59 @@
+# adserver — Revive-style banner ad server on Cloudflare
+# Docs: README.md, DEPLOY.md, ARCHITECTURE.md, SECURITY.md
+
+name = "adserver"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Single canonical origin. workers.dev is disabled because the Worker is served
+# on the custom domain (and the Access application protects that hostname).
+workers_dev = false
+# Optional: pin the account so wrangler does not resolve it from the token
+
+# account_id = "<your-account-id>"
+
+# Production hostname for this Worker. custom_domain = true makes Cloudflare
+# create the DNS record and certificate on deploy.
+routes = [
+  { pattern = "ads.example.com", custom_domain = true }
+]
+
+# Static assets (the drop-in loader + admin console) live in ./public.
+# run_worker_first = true so the Worker owns routing for every request and
+# falls back to the asset server explicitly. Predictable > clever.
+[assets]
+directory = "public"
+binding = "ASSETS"
+run_worker_first = true
+
+[observability]
+enabled = true
+
+# ---------------------------------------------------------------- data stores
+# Create these first (see DEPLOY.md), then paste the ids/names in.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "adserver"
+database_id = "00000000-0000-0000-0000-000000000000"
+
+[[r2_buckets]]
+binding = "ADS"
+bucket_name = "adserver-creatives"
+
+# ------------------------------------------------------------------ variables
+[vars]
+ENVIRONMENT = "production"
+# Canonical origin that ad tags, click redirects and creative URLs are built
+# from. Must be the domain the tags are served from (custom domain or *.workers.dev).
+ADS_BASE_URL = "https://ads.example.com"
+# Cloudflare Access team domain, e.g. "your-team.cloudflareaccess.com" (no scheme).
+ACCESS_TEAM_DOMAIN = "your-team.cloudflareaccess.com"
+# Access application AUD tag for the management console app.
+ACCESS_AUD = "<your-access-application-aud-tag>"
+# Day boundary used for reporting + daily caps.
+STATS_TIMEZONE = "Australia/Brisbane"
+
+# Secrets (never in this file):
+#   wrangler secret put CLICK_SECRET   # signs click/impression tokens
+#   wrangler secret put IP_SALT        # salts visitor hashes; rotate freely

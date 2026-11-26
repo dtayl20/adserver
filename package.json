@@ -1,0 +1,24 @@
+{
+  "name": "adserver",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Revive-style self-hosted banner ad server (Cloudflare Workers + D1 + R2)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "wrangler d1 migrations apply adserver --remote",
+    "db:migrate:local": "wrangler d1 migrations apply adserver --local",
+    "db:seed:local": "wrangler d1 execute adserver --local --file=seeds/demo.sql",
+    "db:seed": "wrangler d1 execute adserver --remote --file=seeds/demo.sql"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^4.0.0"
+  }
+}

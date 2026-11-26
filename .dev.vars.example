@@ -1,0 +1,10 @@
+# Copy to .dev.vars for `wrangler dev` (never commit .dev.vars).
+# wrangler dev runs a LOCAL D1 + R2 by default, so no Cloudflare resources needed.
+
+CLICK_SECRET=dev-only-change-me
+IP_SALT=dev-only-change-me
+
+# Local admin access: when ENVIRONMENT=dev, this token is accepted in the
+# x-dev-admin-token header so the console works without Cloudflare Access.
+# Leave empty in any non-dev environment.
+ACCESS_DEV_TOKEN=letmein
